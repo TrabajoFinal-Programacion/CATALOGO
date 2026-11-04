@@ -1,0 +1,21 @@
+# Perfil de tests: clave publica de prueba, contenedores de Testcontainers y la API de catedra simulada.
+app:
+  catedra:
+    # La API REST de la catedra se reemplaza por un mock (@MockitoBean CatedraClient); esta URL no se usa.
+    api-url: http://localhost:1
+    token: token-de-prueba
+    group-id: test-group
+    kafka-catalog-topic: catedra.catalog.test-group
+    kafka-consumer-group: alumnos-test-group
+    max-attempts: 1
+    retry-backoff: PT0.01S
+  sync:
+    # Los tests disparan la sincronizacion explicitamente.
+    scheduler-enabled: false
+    kafka-retry-interval: PT0.2S
+    kafka-max-retries: 1
+  security:
+    jwt:
+      issuer: turnos-service
+      audience: turnos-app
+      public-key-location: classpath:test-keys/test-public.pem

@@ -1,0 +1,53 @@
+{
+  "info": {
+    "name": "Catedra - cuenta tecnica",
+    "description": "Alta y consulta de la cuenta tecnica del proyecto. Definir las variables catedraUrl (por ejemplo http://<ip>:<puerto>) y, para las consultas protegidas, catedraToken. No guardar el token en el repositorio.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "catedraUrl", "value": "http://<ip-catedra>:<puerto-api>" },
+    { "key": "catedraToken", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "1. Registrar cuenta tecnica (una sola vez)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{catedraUrl}}/api/student/register",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"login\": \"<login>\",\n  \"password\": \"<password>\",\n  \"groupId\": \"<nombre del proyecto>\",\n  \"firstName\": \"<nombre>\",\n  \"lastName\": \"<apellido>\",\n  \"langKey\": \"es\"\n}"
+        }
+      }
+    },
+    {
+      "name": "2. Login tecnico",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{catedraUrl}}/api/authenticate",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"<login>\",\n  \"password\": \"<password>\",\n  \"rememberMe\": true\n}"
+        }
+      }
+    },
+    {
+      "name": "3. Integracion actual",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{catedraToken}}" }],
+        "url": "{{catedraUrl}}/api/student/integration"
+      }
+    },
+    {
+      "name": "4. Snapshot del catalogo",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{catedraToken}}" }],
+        "url": "{{catedraUrl}}/api/synchronization/snapshot"
+      }
+    }
+  ]
+}
